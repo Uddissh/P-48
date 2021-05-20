@@ -1,7 +1,7 @@
 var PLAY = 1;
 var END = 0;
 var gameState = PLAY;
-var trex;
+var trex, trexpic;
 var ground, invisibleGround, groundImage;
 
 var cloudsGroup, cloudImage;
@@ -13,7 +13,7 @@ var gameOver
 var reStart
 function preload(){
   
-  trex = loadImage("images.png");
+  trexpic = loadImage("images.png");
   
   groundImage = loadImage("ground2.png");
   
@@ -33,8 +33,9 @@ function preload(){
 function setup() {
   createCanvas(600, 200);
   
-  trex = createSprite(50,180,20,50);
-  trex.scale = 0.5;
+  trex = createSprite(50,100,20,50);
+  trex.addImage("bike",trexpic)
+  trex.scale = 0.2;
   
   ground = createSprite(200,180,400,20);
   ground.addImage("ground",groundImage);
