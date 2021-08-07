@@ -1,90 +1,113 @@
 var PLAY = 1;
 var END = 0;
 var gameState = PLAY;
-var trex, trexpic;
-var ground, invisibleGround, groundImage;
-
+var trexIMG, trex;
+var ground;
+var invisibleGround;
+var groundImage;
 var cloudsGroup, cloudImage;
 var obstaclesGroup, obstacle1, obstacle2, obstacle3, obstacle4, obstacle5, obstacle6;
-
-var score;
-
+var score, back1, back2;
+var wow, ohno;
+var ani;
 var gameOver
 var reStart
 function preload(){
   
-  trexpic = loadImage("images.png");
+  ani = loadAnimation("ani1.jpg","ani2.jpg","ani3.jpg","ani4.jpg","ani5.jpg","ani6.jpg","ani7.jpg","ani8.jpg","ani9.jpg","ani10.jpg","ani11.jpg","ani12.jpg")
+
+  back1 = loadImage("First.jpg");
+  back2 = loadImage("Second.jpg");
   
-  groundImage = loadImage("ground2.png");
-  
-  cloudImage = loadImage("cloud.png");
-  
-  obstacle1 = loadImage("obs1.jpeg");
-  obstacle2 = loadImage("obs1.jpeg");
-  obstacle3 = loadImage("obs1.jpeg");
-  obstacle4 = loadImage("obs1.jpeg");
-  obstacle5 = loadImage("obs1.jpeg");
-  obstacle6 = loadImage("obs1.jpeg");
-  
+  obstacle1 = loadImage("stone.png");
+  obstacle2 = loadImage("stone.png");
+  obstacle3 = loadImage("stone.png");
+  obstacle4 = loadImage("stone.png");
+  obstacle5 = loadImage("stone.png");
+  obstacle6 = loadImage("stone.png");
+
+  wow = loadSound("wow.mp3");
+  ohno = loadSound("oh no.mp3");
+
   gameOverImg = loadImage("gameOver.png");
   reStartImg = loadImage("restart.png");
 }
 
 function setup() {
-  createCanvas(600, 200);
+  createCanvas(windowWidth, windowHeight);
   
-  trex = createSprite(50,100,20,50);
-  trex.addImage("bike",trexpic)
-  trex.scale = 0.2;
-  
-  ground = createSprite(200,180,400,20);
-  ground.addImage("ground",groundImage);
-  ground.x = ground.width /2;
-  
-  gameOver = createSprite(0, 100);
+  trex = createSprite(200,windowHeight-250,20,20);
+  trex.addAnimation("go", ani);
+  trex.scale = 1.3;
+  trex.debug = true;
+
+  invisibleGround = createSprite(200,windowHeight-90,1700,10);
+  invisibleGround.visible = true; 
+  invisibleGround.debug = true;
+
+  gameOver = createSprite(850, 250);
   gameOver.addImage(gameOverImg);
   gameOver.visible = false;
   gameOver.scale = 0.5;
   
-  reStart = createSprite(300, 150);
+  reStart = createSprite(850, 350);
   reStart.addImage(reStartImg);
-  reStart.scale = 0;
+  reStart.scale = 0.5;
   reStart.visible = false;
-  invisibleGround = createSprite(200,190,400,10);
-  invisibleGround.visible = false;
-  
-  cloudsGroup = new Group();
+
   obstaclesGroup = new Group();
   
   score = 0;
   
-  camera.x = trex.x - 20;
-  camera.y = trex.y - 20;
+  //camera.x = trex.x - 20;
+  //camera.y = trex.y - 20;
 }
 
 function draw() {
-  background("white");//180
-  text("Score: "+ score, 0,70);
+  background(back1);
+  
+  //set velcity of each game object to 0
+  invisibleGround.velocityX = 0;
+  trex.velocityY = 0;
+
+  if (invisibleGround.x < 0){
+    invisibleGround.x = invisibleGround.width/2;
+  }
+
+  text("Score: "+ score, 850,70);
+
   if (gameState === PLAY) {
-   ground.velocityX = -(6+3*score/100);
+    invisibleGround.velocityX = -(6+3*score/100);
       
   
   score = score + Math.round(getFrameRate()/60);
   
+  //if (score % 90 === 0) {
+    
+  // wow.play();
+
+  //}
   
-  if(keyDown("space")) {
-    trex.velocityY = -10;
+  if(keyDown("space") && invisibleGround.isTouching(trex)) {
+    trex.velocityY = -150;
   }
   
-  trex.velocityY = trex.velocityY + 0.8
+  console.log(trex.x);
+
+  trex.velocityY = trex.velocityY + 2.5;
   
-  if (ground.x < 0){
-    ground.x = ground.width/2;
+  if (back1.x < 0 && background === back1){
+    back1.x = back1.width/2;
+  } 
+  
+  if (back2.x < 0 && background === back2) {
+    back2.x = back2.width/2;
   }
-  
+
   trex.collide(invisibleGround);
-  spawnClouds();
+
   spawnObstacles();
+
     if (obstaclesGroup.isTouching(trex)) {
      gameState = END;   
     }
@@ -93,17 +116,11 @@ function draw() {
     gameOver.visible = true;
     reStart.visible = true;
     
-    //set velcity of each game object to 0
-    ground.velocityX = 0;
-    trex.velocityY = 0;
     obstaclesGroup.setVelocityXEach(0);
-    cloudsGroup.setVelocityXEach(0);
     
     //set lifetime of the game objects so that they are never destroyed
     obstaclesGroup.setLifetimeEach(-1);
-    cloudsGroup.setLifetimeEach(-1);
-    
-    
+
   }
   
   if(mousePressedOver(reStart)) {
@@ -116,43 +133,21 @@ function reset(){
   gameState = PLAY;
   
   gameOver.visible = false;
-  restart.visible = false;
+  reStart.visible = false;
   
   obstaclesGroup.destroyEach();
-  cloudsGroup.destroyEach();
-  
-  trex.changeAnimation("running", trex_running);
   
   score = 0;
   
 }
-
-function spawnClouds() {
-  //write code here to spawn the clouds
-  if (frameCount % 60 === 0) {
-    var cloud = createSprite(600,120,40,10);
-    cloud.y = Math.round(random(80,120));
-    cloud.addImage(cloudImage);
-    cloud.scale = 0.5;
-    cloud.velocityX = -3;
-    
-     //assign lifetime to the variable
-    cloud.lifetime = 200;
-    
-    //adjust the depth
-    cloud.depth = trex.depth;
-    trex.depth = trex.depth + 1;
-    
-    //add each cloud to the group
-    cloudsGroup.add(cloud);
-  }
-  
-}
+//i want to addanimation()to this project is it ok?
+//cause i want to upgrade
+//mine is good and craft is better and minecraft is the best
 
 function spawnObstacles() {
-  if(frameCount % 60 === 0) {
-    var obstacle = createSprite(600,165,10,40);
-    obstacle.velocityX = -(6+3*score/100);
+  if(frameCount % 90 === 0) {
+    var obstacle = createSprite(1800,windowHeight-100,20,20);
+    obstacle.velocityX = -(8+3*score/50);
     
     //generate random obstacles
     var rand = Math.round(random(1,6));
@@ -173,9 +168,10 @@ function spawnObstacles() {
     }
     
     //assign scale and lifetime to the obstacle           
-    obstacle.scale = 0.2;
-    obstacle.lifetime = 300;
+    obstacle.scale = 0.15;
+    obstacle.lifetime = 400;
     //add each obstacle to the group
     obstaclesGroup.add(obstacle);
+    obstaclesGroup.debug = false;
   }
 }
