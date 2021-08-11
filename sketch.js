@@ -45,12 +45,12 @@ function setup() {
   invisibleGround.visible = false; 
   //invisibleGround.debug = true;
 
-  gameOver = createSprite(windowWidth/2-50, windowHeight/2);
+  gameOver = createSprite(windowWidth/2, windowHeight/2);
   gameOver.addImage(gameOverImg);
   gameOver.visible = false;
   gameOver.scale = 0.5;
   
-  reStart = createSprite(windowWidth/2-50, windowHeight/2+50);
+  reStart = createSprite(windowWidth/2-10, windowHeight/2+50);
   reStart.addImage(reStartImg);
   reStart.scale = 0.5;
   reStart.visible = false;
