@@ -36,7 +36,7 @@ function preload(){
 function setup() {
   createCanvas(windowWidth, windowHeight);
   
-  trex = createSprite(windowWidth-1500,windowHeight-250,20,20);
+  trex = createSprite(100,windowHeight-250,20,20);
   trex.addAnimation("go", ani);
   trex.scale = 1.3;
   //trex.debug = true;
@@ -74,7 +74,7 @@ function draw() {
     invisibleGround.x = invisibleGround.width/2;
   }
   textSize(20)
-  text("Score: "+ score, windowWidth-100,windowHeight-700);
+  text("Score: "+ score, windowWidth-100,100);
   
 
   if (gameState === PLAY) {
