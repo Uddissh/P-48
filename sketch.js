@@ -48,11 +48,11 @@ function setup() {
   gameOver = createSprite(windowWidth/2-50, windowHeight/2);
   gameOver.addImage(gameOverImg);
   gameOver.visible = false;
-  gameOver.scale = 0.8;
+  gameOver.scale = 0.5;
   
   reStart = createSprite(windowWidth/2-50, windowHeight/2+50);
   reStart.addImage(reStartImg);
-  reStart.scale = 0.8;
+  reStart.scale = 0.5;
   reStart.visible = false;
 
   obstaclesGroup = new Group();
@@ -74,7 +74,7 @@ function draw() {
     invisibleGround.x = invisibleGround.width/2;
   }
   textSize(20)
-  text("Score: "+score, windowWidth-150,100);
+  text("Score: "+score, windowWidth-100,50);
   
 
   if (gameState === PLAY) {
