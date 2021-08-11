@@ -39,20 +39,20 @@ function setup() {
   trex = createSprite(200,windowHeight-250,20,20);
   trex.addAnimation("go", ani);
   trex.scale = 1.3;
-  trex.debug = true;
+  //trex.debug = true;
 
   invisibleGround = createSprite(200,windowHeight-90,1700,10);
-  invisibleGround.visible = true; 
-  invisibleGround.debug = true;
+  invisibleGround.visible = false; 
+  //invisibleGround.debug = true;
 
   gameOver = createSprite(850, 250);
   gameOver.addImage(gameOverImg);
   gameOver.visible = false;
-  gameOver.scale = 0.5;
+  gameOver.scale = 0.8;
   
   reStart = createSprite(850, 350);
   reStart.addImage(reStartImg);
-  reStart.scale = 0.5;
+  reStart.scale = 0.8;
   reStart.visible = false;
 
   obstaclesGroup = new Group();
@@ -73,8 +73,9 @@ function draw() {
   if (invisibleGround.x < 0){
     invisibleGround.x = invisibleGround.width/2;
   }
-
-  text("Score: "+ score, 850,70);
+  textSize(20)
+  text("Score: "+ score, windowWidth-900,70);
+  
 
   if (gameState === PLAY) {
     invisibleGround.velocityX = -(6+3*score/100);
@@ -82,13 +83,13 @@ function draw() {
   
   score = score + Math.round(getFrameRate()/60);
   
-  //if (score % 90 === 0) {
+  if (score % 90 === 0) {
     
-  // wow.play();
+   //wow.play();
 
-  //}
+  }
   
-  if(keyDown("space") && invisibleGround.isTouching(trex)) {
+  if(keyDown("space")) {
     trex.velocityY = -150;
   }
   
