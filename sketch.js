@@ -74,7 +74,7 @@ function draw() {
     invisibleGround.x = invisibleGround.width/2;
   }
   textSize(20)
-  text("Score: "+ score, windowWidth-900,windowHeight-700);
+  text("Score: "+ score, windowWidth-100,windowHeight-700);
   
 
   if (gameState === PLAY) {
