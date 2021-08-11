@@ -36,7 +36,7 @@ function preload(){
 function setup() {
   createCanvas(windowWidth, windowHeight);
   
-  trex = createSprite(200,windowHeight-250,20,20);
+  trex = createSprite(windowWidth-1500,windowHeight-250,20,20);
   trex.addAnimation("go", ani);
   trex.scale = 1.3;
   //trex.debug = true;
@@ -45,12 +45,12 @@ function setup() {
   invisibleGround.visible = false; 
   //invisibleGround.debug = true;
 
-  gameOver = createSprite(850, 250);
+  gameOver = createSprite(850, windowHeight-600);
   gameOver.addImage(gameOverImg);
   gameOver.visible = false;
   gameOver.scale = 0.8;
   
-  reStart = createSprite(850, 350);
+  reStart = createSprite(windowWidth-850, windowHeight-400);
   reStart.addImage(reStartImg);
   reStart.scale = 0.8;
   reStart.visible = false;
@@ -74,7 +74,7 @@ function draw() {
     invisibleGround.x = invisibleGround.width/2;
   }
   textSize(20)
-  text("Score: "+ score, windowWidth-900,70);
+  text("Score: "+ score, windowWidth-900,windowHeight-700);
   
 
   if (gameState === PLAY) {
